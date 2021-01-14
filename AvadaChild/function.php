@@ -2,14 +2,12 @@
 function theme_enqueue_styles() {
     wp_enqueue_style('child-style', get_stylesheet_directory_uri().'/style.css', array('avada-stylesheet'));
 }
-
 add_action('wp_enqueue_scripts', 'theme_enqueue_styles');
 
 function avada_lang_setup() {
     $lang = get_stylesheet_directory().'/languages';
     load_child_theme_textdomain('Avada', $lang);
 }
-
 add_action('after_setup_theme', 'avada_lang_setup');
 
 
@@ -165,3 +163,45 @@ function do_recipe_content($atts) {
     return $style . do_shortcode($slider_container . $share_container . $introduction_container . $ingredients_container . $preparation_container);
 }
 add_shortcode('recipe-content-shortcode', 'do_recipe_content');
+
+function action_woocommerce_before_single_product_summary() {
+    $youtube_promoting_video = get_field('youtube_promoting_video');
+    if ($youtube_promoting_video && $youtube_promoting_video !== "") {
+        $output =
+            '<div class="promoting-container">
+                <div class="promoting-video-contianer">
+                    <div class="fluid-width-video-wrapper" style="padding-top: 56.25%;">'.convertYoutube($youtube_promoting_video).'</div>
+                </div>
+            </div>';
+
+        $style =
+            '<style>
+                .promoting-container{clear:both; width: 100%;display: flex;justify-content: center; margin-bottom: 10px}
+                .promoting-video-contianer {
+                        width: 100%;max-width: 1000px;overflow: hidden;
+                        border-radius: 8px !important;box-shadow: rgba(128, 128, 128, 0.5) 5px 5px 10px 0;
+                }
+            </style>';
+
+        echo $style . $output;
+    }
+
+    $link_for_more_details = get_field('link_for_more_details');
+    if ($link_for_more_details && $link_for_more_details !== "") {
+        $output =
+            '<div class="more-details-container">
+                <a class="fusion-button button-flat fusion-button-default-size button-default button-1 fusion-button-default-span fusion-button-default-type" target="_blank" rel="noopener noreferrer" href="'.$link_for_more_details.'">
+                    <span class="fusion-button-text">More details</span>
+                </a>
+            </div>';
+
+        $style =
+            '<style>
+                .more-details-container{clear:both; width: 100%;display: flex;justify-content: center;}
+            </style>';
+
+        echo $style . $output;
+    }
+}
+add_action( 'woocommerce_after_single_product_summary', 'action_woocommerce_before_single_product_summary', 2);
+
