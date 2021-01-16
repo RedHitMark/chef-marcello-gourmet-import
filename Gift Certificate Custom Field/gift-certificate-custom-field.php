@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define('GIFT_CERTIFICATE_IDs', array(1972, 2037, 2029, 2020));
-define('GIFT_BASKETS_IDs', array(2106, 2167, 2168, 2169, 2170, 2466, 2469));
+define('GIFT_BASKETS_IDs', array(2106, 2167, 2168, 2169, 2170, 2466, 2469, 2476, 2493));
 function show_sender_email_input_field() {
     global $product;
     $product_id = $product->get_id();
